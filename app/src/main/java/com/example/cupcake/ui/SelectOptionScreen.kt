@@ -39,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.cupcake.R
 import com.example.cupcake.ui.components.FormattedPriceLabel
+import com.example.cupcake.ui.theme.CupcakeTheme
 
 /**
  * Composable that displays the list of items as [RadioButton] options,
@@ -51,6 +52,8 @@ fun SelectOptionScreen(
     subtotal: String,
     options: List<String>,
     onSelectionChanged: (String) -> Unit = {},
+    onNextClick: () -> Unit,
+    onCancelClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
     var selectedValue by rememberSaveable { mutableStateOf("") }
@@ -103,14 +106,14 @@ fun SelectOptionScreen(
             horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
             verticalAlignment = Alignment.Bottom
         ){
-            OutlinedButton(modifier = Modifier.weight(1f), onClick = {}) {
+            OutlinedButton(modifier = Modifier.weight(1f), onClick = onCancelClick) {
                 Text(stringResource(R.string.cancel))
             }
             Button(
                 modifier = Modifier.weight(1f),
                 // the button is enabled when the user makes a selection
                 enabled = selectedValue.isNotEmpty(),
-                onClick = {}
+                onClick = onNextClick
             ) {
                 Text(stringResource(R.string.next))
             }
@@ -119,12 +122,16 @@ fun SelectOptionScreen(
 
 }
 
-@Preview
+@Preview (showBackground = true)
 @Composable
 fun SelectOptionPreview(){
-    SelectOptionScreen(
-        subtotal = "299.99",
-        options = listOf("Option 1", "Option 2", "Option 3", "Option 4"),
-        modifier = Modifier.fillMaxHeight()
-    )
+    CupcakeTheme {
+        SelectOptionScreen(
+            subtotal = "299.99",
+            options = listOf("Option 1", "Option 2", "Option 3", "Option 4"),
+            modifier = Modifier.fillMaxHeight(),
+            onNextClick = {},
+            onCancelClick = {}
+        )
+    }
 }
